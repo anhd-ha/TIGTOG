@@ -1,0 +1,15 @@
+name: tigtog
+channels:
+  - defaults
+  - bioconda
+dependencies:
+  - pandas
+  - hmmer
+  - matplotlib
+  - scikit-learn==1.2.1
+  - joblib
+  - python=3.8
+  - last
+  - prodigal
+  - biopython
+
