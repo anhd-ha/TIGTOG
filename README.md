@@ -61,7 +61,7 @@ python tigtog.py -i test_MAGs -n test_run -e 1e-5 -t 8 -a
 ```
 
 ## Result
-* Taxonomic prediction of input MAGs(provided on the Order and Family levels) and confidence of predictions are stored in the file prediction_result.tsv
+* Taxonomic prediction of input MAGs(provided on the Order and Family levels) and confidence of predictions are stored in the file `prediction_result.tsv`.
 
 * If you requested AAI calculation using the -a flag, the reference giant virus with best AAI to your MAGs will also be reported in the result file, along with the AAI value, alignment fraction (AF), and the taxonomic assignment of that reference. Only AAI hits with an AF>20 will be reported.
 
