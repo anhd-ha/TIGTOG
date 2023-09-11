@@ -1,0 +1,18 @@
+name: gvclf
+channels:
+  - defaults
+  - bioconda
+dependencies:
+  - pandas
+  - matplotlib
+  - joblib
+  - python
+  - biopython
+  - prodigal
+  - hmmer
+  - last
+  - pip
+  - pip: 
+    - scikit-learn==1.2.1
+
+
