@@ -41,7 +41,7 @@ The project name for outputs.
 Number of cpus to use for the HMMER3 search and AAI comparison (if requested).
 
 **-e, --evalue**
-e-value that is passed to HMMER3 for the GVOG hmmsearch (default=1e-10).
+e-value that is passed to HMMER3 for the GVOG hmmsearch (default=1e-10, recommended).
 
 **-a, --aai**
 If you would like to calculate one-way Average Amino Acid Identity (AAI) between your MAGs and a database of reference giant virus sequences (containing representatives of every genus as delineated in [Aylward et al. 2021](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3001430)), you can use the -a flag.
