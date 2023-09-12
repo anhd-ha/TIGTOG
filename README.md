@@ -55,9 +55,9 @@ To get the taxonomic prediction of MAGs using 8 threads
 ```shell
 python tigtog.py -i test_MAGs -n test_run -t 8
 ```
-To change the e-value of the HMM search, get taxonomic prediction, and run AAI calculation
+To get taxonomic prediction and run AAI calculation without re-running previous prodigal and HMMER search
 ```shell
-python tigtog.py -i test_MAGs -n test_run -e 1e-5 -t 8 -a
+python tigtog.py -i test_MAGs -n test_run -t 8 -a -r
 ```
 
 ## Result
