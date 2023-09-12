@@ -1,7 +1,7 @@
 # TIGTOG: Taxonomic Information of Giant viruses using Trademark Orthologous Groups
 TIGTOG is a command-line tool for assigning taxonomy to giant virus metagenome-assembled genomes (GVMAGs) using protein family trademarks. 
 
-This tool will search predicted proteins of input MAGs againts a set of curated Hidden Markov Models (HMM) for protein families prevalent in different groups of giant viruses. It utilizes the protein profiles and other sequence features (e.g. GC content) to predict the taxonomic classification of the input MAGs. The tool may also report the Average Amino Acid Identity (AAI) between input MAGs and taxonomically identified GVs.
+This tool will search predicted proteins of input MAGs against a set of curated Hidden Markov Models (HMM) for protein families prevalent in different groups of giant viruses. It utilizes the protein profiles and other sequence features (e.g. GC content) to predict the taxonomic classification of the input MAGs. The tool may also report the Average Amino Acid Identity (AAI) between input MAGs and taxonomically identified GVs.
 
 
 ## How to use
@@ -16,7 +16,7 @@ conda env create -f tigtog.yml
 ```
 * If you are using conda on MacOS, please use the file `tigtog_macos.yml` to install the environment.
   
-* Input for this tool is a directory that contains single contigs or MAGs as nucleic acid (fasta format).
+* Input for this tool is a directory that contains single contigs or MAGs as nucleic acid sequences (fasta format).
 
 
 ## Running 
@@ -63,7 +63,7 @@ python tigtog.py -i test_MAGs -n test_run -t 8 -a -r
 ## Result
 * Taxonomic prediction of input MAGs(provided on the Order and Family levels) and confidence of predictions are stored in the file `prediction_result.tsv`.
 
-* If you requested AAI calculation using the -a flag, the reference giant virus with best AAI to your MAGs will also be reported in the result file, along with the AAI value, alignment fraction (AF), and the taxonomic assignment of that reference. Only AAI hits with an AF>20 will be reported.
+* If you requested AAI calculation using the -a flag, the reference giant virus with the best AAI to your MAGs will also be reported in the result file, along with the AAI value, alignment fraction (AF), and the taxonomic assignment of that reference. Only AAI hits with an AF>20 will be reported.
 
 
 ### Contact
