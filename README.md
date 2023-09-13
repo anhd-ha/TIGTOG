@@ -38,7 +38,7 @@ Folder containing input genome FASTA file.
 The project name for outputs. 
 
 **-t, --cpus**
-Number of cpus to use for the HMMER3 search and AAI comparison (if requested).
+Number of CPUs to use for the HMMER3 search and AAI calculation (if requested).
 
 **-e, --evalue**
 e-value that is passed to HMMER3 for the GVOG hmmsearch (default=1e-10, recommended).
