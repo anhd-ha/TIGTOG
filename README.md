@@ -67,9 +67,10 @@ python tigtog.py -i test_MAGs -n test_run -t 8 -a -r
 
 
 ### Contact
-Please contact us if you have any questions:  
-Frank Aylward: faylward@vt.edu
+Please contact us if you have any questions: 
 Anh Ha: anhdha@vt.edu
+Frank Aylward: faylward@vt.edu
+
 
 ### Citation
 Coming soon!
