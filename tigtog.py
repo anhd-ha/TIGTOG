@@ -77,16 +77,16 @@ def parse_hmmout(hmmout, evalue):
 		g2 = re.sub("hmm$", "trim", g)
 		list_g.append(g2)
 
-	final_gvog_dict = {gvg: 0 for gvg in list_g}  #start a dict (ordered). Default value for all keys is 0		
+	final_gvog_dict = {gvg: 0 for gvg in list_g}  	
 	for key, value in hit_dict.items():
 		final_gvog_dict[value] +=1
 
-	hmmout = os.path.split(hmmout)[1]  #get name of the genome file
+	hmmout = os.path.split(hmmout)[1]  
 	seq_name = re.sub(".gvog.out","",hmmout) 
-	df = pd.DataFrame(final_gvog_dict, index = [seq_name])  #convert dict to DF
+	df = pd.DataFrame(final_gvog_dict, index = [seq_name])  
 	
 	count_tab = "GVOG_count_unseen.tsv"
-	df.to_csv(count_tab, sep ="\t",index_label="Sequence", mode ="a", header=not os.path.exists(count_tab)) #"header" option is for is printing at the first write only
+	df.to_csv(count_tab, sep ="\t",index_label="Sequence", mode ="a", header=not os.path.exists(count_tab)) 
 
 	return df
 
