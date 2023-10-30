@@ -20,7 +20,7 @@ conda env create -f tigtog.yml
 
 
 ## Running 
-Please navigate to the TIGTOG/ folder and activate the tigtog environment by
+Activate the tigtog environment by
 ```shell
 conda activate tigtog
 ```
