@@ -35,7 +35,7 @@ python tigtog.py -i <directory of fasta files> -n <project_name>
 Folder containing input genome FASTA file. 
 
 **-n, --project**
-The project name for outputs. 
+The project name for outputs. Please ensure it differs from the input folder name.
 
 **-t, --cpus**
 Number of CPUs to use for the HMMER3 search and AAI calculation (if requested).
