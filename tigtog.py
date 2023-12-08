@@ -21,6 +21,16 @@ def predict_proteins(genome_file, project, redo):
 
 	file_name = os.path.basename(genome_file)
 	file_base = os.path.splitext(file_name)[0]
+
+	nucl_length = float(0)
+	for i in SeqIO.parse(genome_file, "fasta"):
+			nucl_length += len(i.seq)
+
+	if nucl_length > 5000000:
+		print("Warning: "+file_name+" is a very large genome. Are you sure this is a viral genome or MAG?")
+		large = True
+	else:
+		large = False
 	
 	path_base = os.path.splitext(project)[0]
 	protein_file = os.path.join(path_base, file_base+".faa")
@@ -29,7 +39,21 @@ def predict_proteins(genome_file, project, redo):
 	cmd2 = shlex.split(cmd)
 	if not redo:
 		subprocess.call(cmd2, stdout=open("out.txt", "w"), stderr=open("err.txt", "w"))
-	return protein_file
+
+
+	prot_length = float(0)
+	for j in SeqIO.parse(protein_file, "fasta"):
+		prot_length += len(j.seq)
+
+	density = 100 * (prot_length * 3) / nucl_length
+	if density < 85:
+		print("Warning: "+file_name+" has low coding density (<85%). Results may not be accurate.")
+		low_dens = True
+	else:
+		low_dens = False
+
+
+	return protein_file, file_base, large, nucl_length, low_dens, density
 
 
 # run HMMER3
@@ -153,7 +177,7 @@ def tax_predict(output_f):
 	    confidence_fam.append(prediction_fam[max_index])
 
 	# Print out predictions and confidence
-	pred = pd.DataFrame({'Sequence':name,'Predicted_Order':ord_pred, 'Confidence_Order_Pred': confidence,'Predicted_Family':fam_pred, 'Confidence_Family_Pred': confidence_fam})
+	pred = pd.DataFrame({'Sequence':name,'Predicted_Order':ord_pred, 'Order_Predict_Probability': confidence,'Predicted_Family':fam_pred, 'Family_Predict_Probability': confidence_fam})
 
 	# clean up feature matrices
 	fp_ord = os.path.join(output_f, 'feat_order.tsv')
@@ -295,8 +319,8 @@ def parse_best_aai_hit(output_folder):
 	aai_tax = pd.read_csv('db/GVDB_tax.csv')
 	aai_fin = aai_hit.set_index('Best_AAI_hit').join(aai_tax.set_index('GV'))	
 	aai_fin['Best_AAI_hit'] = aai_fin.index
-	aai_fin = aai_fin[['Best_AAI_hit','Sequence','AAI','AF','Order','Family']]
-	aai_fin.columns = ['Best_AAI_hit', 'Sequence', 'AAI','Alignment_fraction (%)','Best_hit_Order','Best_hit_Family']
+	aai_fin = aai_fin[['Best_AAI_hit','Sequence','AAI','AF','Order','Family','Genus']]
+	aai_fin.columns = ['Best_AAI_hit', 'Sequence', 'AAI','Alignment_fraction (%)','Best_hit_Order','Best_hit_Family', 'Best_hit_Genus']
 	
 	
 	fp = os.path.join(output_folder, 'AAI.tsv')
@@ -310,6 +334,7 @@ def run_program(input, project, evalue, cpus, aai, redo):
 
 	print("Processing sequences")
 	file_list = os.listdir(input)
+	process_info =[]
 	for i in file_list:
 		genome_folder = os.path.join(project, i)
 		genome = os.path.join(input, i)
@@ -320,18 +345,23 @@ def run_program(input, project, evalue, cpus, aai, redo):
 			pass
 		else:
 			os.mkdir(foldername)
-		print("Running feature search on "+ i)
 
 		relpath = os.path.split(project)[1]
 		relpathbase = os.path.splitext(relpath)[0]
 		base = os.path.splitext(project)[0]
 
 
-		# predict proteins, run HMMER3 searches, and parse outputs
-		protein_file = predict_proteins(genome, genome_folder, redo)
+		# predict proteins and evaluate sequence
+		protein_file, name, too_large, size, low_density, density = predict_proteins(genome, genome_folder, redo)
+		genome_info = {'Sequence': name, 'Warning: Large size':too_large, 'Genome_Size (bp)':size, 'Warning: Low coding density': low_density, 'Coding_density (%)': density}
+		process_info.append(genome_info)
+		
+		# run HMMER3 searches, and parse outputs
+		print("Running feature search on "+ i)
 		vog_out  = run_hmmer(protein_file, cpus, redo, evalue)
 		vog_hit = parse_hmmout(vog_out, evalue)
 
+	seq_processing = pd.DataFrame(process_info)
 
 	# print feature matrices
 	table = pd.read_table("GVOG_count_unseen.tsv")
@@ -350,7 +380,9 @@ def run_program(input, project, evalue, cpus, aai, redo):
 
 
 	# predict taxonomy
-	tax = tax_predict(project)
+	taxo = tax_predict(project)
+	taxo2 = seq_processing.set_index('Sequence').join(GC.set_index('Sequence'))	
+	tax = taxo2.join(taxo.set_index('Sequence'))	
 
 	# calculate AAI if requested:
 	if aai:
@@ -358,18 +390,26 @@ def run_program(input, project, evalue, cpus, aai, redo):
 		aai_final = parse_best_aai_hit(project)
 
 		# print result table
-		result = tax.set_index('Sequence').join(aai_final.set_index('Sequence'))	
+		result = tax.join(aai_final.set_index('Sequence'))	
 		result.to_csv("prediction_result.tsv", sep ="\t")
-		print("done!")
 
 	else:
-		tax.to_csv("prediction_result.tsv", sep ="\t", index=False)
-		print("done!")
+		tax.to_csv("prediction_result.tsv", sep ="\t")
+		
+	fin_result = pd.read_csv("prediction_result.tsv", sep ="\t")
+	warnings = ['Warning: Large size','Warning: Low coding density']
+	remaining_cols = [col for col in fin_result.columns if col not in warnings]
+	ordered_cols = remaining_cols + warnings
+	fin_result = fin_result[ordered_cols]
+	fin_result.to_csv("pred_result.tsv", sep='\t', index=False)
 
-
+	print("done!")
+	
 	# clean up
 	os.remove("err.txt")
-	os.rename("prediction_result.tsv", project+"."+"prediction_result.tsv")
+	os.remove("prediction_result.tsv")
+	os.rename("pred_result.tsv", project+"."+"prediction_result.tsv")
+
 
 ########################################################################
 # #### use argparse to run through the command line options given #######
