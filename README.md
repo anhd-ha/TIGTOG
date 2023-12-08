@@ -10,7 +10,7 @@ This tool will search predicted proteins of input MAGs against a set of curated 
 git clone https://github.com/anhd-ha/TIGTOG.git
 ```
 ### Requirements
-* All required dependencies are specified in the file `tigtog.yml` in this repository. Please download this file and use `conda` (see here https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) to recreate the tigtog environment by
+* All required dependencies are specified in the file `tigtog.yml` in this repository. Please download this file and use `conda` (see [here] (https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)) to recreate the tigtog environment by
 ```shell
 conda env create -f tigtog.yml
 ```
