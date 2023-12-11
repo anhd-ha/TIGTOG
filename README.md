@@ -3,7 +3,7 @@ TIGTOG is a command-line tool for assigning taxonomy to giant virus metagenome-a
 
 This tool will search predicted proteins of input MAGs against a set of curated Hidden Markov Models (HMM) for protein families prevalent in different groups of giant viruses. It utilizes the protein profiles and other sequence features (e.g. GC content) to predict the taxonomic classification of the input MAGs. The tool may also report the Average Amino Acid Identity (AAI) between input MAGs and taxonomically identified GVs.
 
-We strongly recommend first identifying viral MAGs using other tools such as ViralRecall or VirSorter2 before using them in TIGTOG. TIGTOG will issue warnings if the input sequence has a large genome size and/or low coding density, which are typically observed in non-viral genomes.
+TIGTOG is intended to be used on viral MAGs. We suggest that users first confirm that their MAGs are viral using tools such as ViralRecall (https://github.com/faylward/viralrecall). TIGTOG will issue warnings if the input sequence has an unusually large genome size and/or low coding density, which are typically observed in non-viral genomes.
 
 ## How to use
 ### Clone the Repository
