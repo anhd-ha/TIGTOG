@@ -74,6 +74,6 @@ Frank Aylward: faylward@vt.edu
 
 
 ### Citation
-Automated classification of giant virus genomes using a random forest model built on trademark protein families. npj Viruses 2(1): 9. [https://www.nature.com/articles/s44298-024-00021-9]
+Automated classification of giant virus genomes using a random forest model built on trademark protein families. npj Viruses 2(1): 9. https://www.nature.com/articles/s44298-024-00021-9
 
 
