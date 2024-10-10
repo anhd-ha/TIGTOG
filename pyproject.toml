@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "TIGTOG"
+version = "0.1.dev"
+dependencies = [
+  "pandas",
+  "matplotlib",
+  "scikit-learn~=1.2.1",
+  "joblib",
+  "biopython",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Anh Ha", email = "anhdha@vt.edu "},
+]
+description = "TIGTOG is a command-line tool for assigning taxonomy to giant virus metagenome-assembled genomes (GVMAGs) using protein family trademarks."
+readme = "README.md"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/anhd-ha/TIGTOG"
+"Bug Tracker" = "https://github.com/anhd-ha/TIGTOG/issues"
+
+[project.scripts]
+tigtog = "tigtog:main"
+
+[tool.setuptools]
+py-modules = ["tigtog"]
